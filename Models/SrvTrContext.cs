@@ -27,21 +27,19 @@ public partial class SrvTrContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApellidoM)
-                .HasMaxLength(10)
-                .IsFixedLength();
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.ApellidoP)
-                .HasMaxLength(10)
-                .IsFixedLength();
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Password)
-                .HasMaxLength(10)
-                .IsFixedLength();
+                .HasMaxLength(80)
+                .IsUnicode(false);
             entity.Property(e => e.UserName)
-                .HasMaxLength(10)
-                .IsFixedLength();
+                .HasMaxLength(30)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

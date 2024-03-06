@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using UDH = WebApplication1.Helpers.UserDataHelper;
 using BC = BCrypt.Net.BCrypt;
+using WebApplication1.Helpers;
 namespace WebApplication1.Controllers
 {
     [ApiController]
@@ -47,6 +48,19 @@ namespace WebApplication1.Controllers
             }
         }
 
+        [HttpPost("Guardar")]
+        public async Task<IActionResult> Guardar([FromBody] User request)
+        {
+            var usuario = UDH.ObtenerUsuario(_dbcontext, request.UserName);
+
+            if (usuario != null)
+                return StatusCode(StatusCodes.Status409Conflict, "Nombre de usuario ya existe");
+
+            request.Password = BC.HashPassword(request.Password);
+            await _dbcontext.Users.AddAsync(request);
+            await _dbcontext.SaveChangesAsync();
+            return StatusCode(StatusCodes.Status200OK, "ok");
+        }
 
     }
 }
